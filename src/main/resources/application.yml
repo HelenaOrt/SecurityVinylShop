@@ -1,0 +1,21 @@
+spring:
+  datasource:
+    driver-class-name: org.h2.Driver
+    url: jdbc:h2:mem:db;
+    username: cristian
+    password: 1234
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: create-drop
+  h2:
+    console:
+      enabled: true
+
+jwt:
+  header: Authorization
+  prefix: "Bearer "
+  secret: "+MbQeThWmYq3t6w9z$C&F)J@NcRfjXn2r4u7x!A%D*G-KaPdSgVkYp3s6v8y/B?E"
+  expiration: 24 #hours
+  issuer: cristian
+  authorities-claim: authorities
