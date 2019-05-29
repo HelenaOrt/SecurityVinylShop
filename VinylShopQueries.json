@@ -45,6 +45,55 @@
           "response": []
         },
         {
+          "name": "Top 5 Vinyls",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{URL_API}}/vinyls/top5",
+              "host": [
+                "{{URL_API}}"
+              ],
+              "path": [
+                "vinyls",
+                "top5"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Total vinyls",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{URL_API}}/vinyls/number",
+              "host": [
+                "{{URL_API}}"
+              ],
+              "path": [
+                "vinyls",
+                "number"
+              ]
+            },
+            "description": "numero total de vinilos que hay en la tienda"
+          },
+          "response": []
+        },
+        {
+          "name": "Vinyls BySize",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": ""
+            },
+            "description": "Número de vinilos ordenados por tamaño"
+          },
+          "response": []
+        },
+        {
           "name": "CreateVinyls",
           "request": {
             "method": "POST",
@@ -507,6 +556,36 @@
                 "1"
               ]
             }
+          },
+          "response": []
+        },
+        {
+          "name": "Top5Groups",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{URL_API}}/groups/top5",
+              "host": [
+                "{{URL_API}}"
+              ],
+              "path": [
+                "groups",
+                "top5"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Total Groups",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": ""
+            },
+            "description": "Numero de grupos que tiene la tienda de vinilos"
           },
           "response": []
         },
