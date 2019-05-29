@@ -62,4 +62,5 @@ public class MusicGroup {
 	public void addVinyl(Vinyl vinyl) {
 		publishedVinylList.add(vinyl);
 	}
+
 }

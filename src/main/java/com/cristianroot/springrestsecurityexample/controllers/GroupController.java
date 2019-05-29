@@ -10,6 +10,7 @@ import com.cristianroot.springrestsecurityexample.exceptions.IdRequiredException
 import com.cristianroot.springrestsecurityexample.exceptions.IllegalOperationException;
 import com.cristianroot.springrestsecurityexample.models.MusicGroupModel;
 import com.cristianroot.springrestsecurityexample.services.GroupService;
+import com.cristianroot.springrestsecurityexample.services.GroupServiceSnapshot;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -19,9 +20,11 @@ import java.util.List;
 public class GroupController {
 
 	private final GroupService groupService;
+	private final GroupServiceSnapshot groupServiceSnapshot;
 
-	public GroupController(GroupService groupService) {
+	public GroupController(GroupService groupService, GroupServiceSnapshot groupServiceSnapshot) {
 		this.groupService = groupService;
+		this.groupServiceSnapshot = groupServiceSnapshot;
 	}
 
 	@GetMapping("/groups")
@@ -47,6 +50,16 @@ public class GroupController {
 	@DeleteMapping("/groups/{id}")
 	public void delete(@PathVariable long id) throws EntityNotFoundException {
 		groupService.delete(id);
+	}
+
+	@GetMapping("/groups/top5")
+	public List<MusicGroupModel> findTop5Groups() throws EntityNotFoundException {
+		return groupServiceSnapshot.findTop5();
+	}
+
+	@GetMapping("groups/number")
+	public int countGroups() throws EntityNotFoundException {
+		return groupServiceSnapshot.countGrups();
 	}
 
 }

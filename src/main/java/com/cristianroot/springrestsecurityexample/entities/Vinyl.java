@@ -95,4 +95,9 @@ public class Vinyl {
 	public void setPrice(double price) {
 		this.price = price;
 	}
+
+	public int getVinylsSold() {
+		return purchaseList.stream().mapToInt(Purchase::getQuantity).sum();
+	}
 }
+

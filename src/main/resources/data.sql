@@ -23,6 +23,6 @@ insert into client_authorities(users_id, authorities_id) values(4, 2);
 insert into client_authorities(users_id, authorities_id) values(5, 2);
 insert into client_authorities(users_id, authorities_id) values(6, 2);
 
-insert into purchase(order_number, client_id, quantity, purchase_date, vinyl_id) values('ASD543', 1, 2, now(), 1);
-insert into purchase(order_number, client_id, quantity, purchase_date, vinyl_id) values('KJD124', 2, 1, now(), 2);
-insert into purchase(order_number, client_id, quantity, purchase_date, vinyl_id) values('CNV963', 3, 4, now(), 3);
+insert into purchase(order_number, client_id, quantity, purchase_date, vinyl_id) values('ASD543', 1, 1, now(), 1);
+insert into purchase(order_number, client_id, quantity, purchase_date, vinyl_id) values('KJD124', 2, 200, now(), 2);
+insert into purchase(order_number, client_id, quantity, purchase_date, vinyl_id) values('CNV963', 3, 400, now(), 3);
