@@ -36,6 +36,8 @@ public class AuthenticationController {
 	@PostMapping("/auth/login")
 	public AuthenticationResponse getToken(@Valid @RequestBody AuthenticationRequest authenticationRequest) {
 		// Let spring check the credentials and get the authorities
+		//El authentication manager tiene que buscar en base de datos las clases del usuario, si se cumple está bien
+		//hay que sobrescribir userDetails manager
 		Authentication authentication = authenticationManager.authenticate(
 				new UsernamePasswordAuthenticationToken(authenticationRequest.getUsername(),
 														authenticationRequest.getPassword()));
@@ -47,6 +49,9 @@ public class AuthenticationController {
 												   .collect(Collectors.toList());
 
 		// Create JWS token
+		//se puede hacer el token a mano porque es el proceso para generar un token pero hay librerías de terceros que te lo hace
+		//esta clase tiene un builder que te da un objeto jwt builder que te da las cosas necesarias para parsear un token
+		//y le dices que es lo que necesitas para firmarlo
 		String token = Jwts.builder()
 						   .signWith(Keys.hmacShaKeyFor(jwtProperties.getSecret().getBytes()))
 						   .setIssuer(jwtProperties.getIssuer())
@@ -54,7 +59,7 @@ public class AuthenticationController {
 						   .setExpiration(new Date(System.currentTimeMillis() + jwtProperties.getExpirationInMillis()))
 						   .claim(jwtProperties.getAuthoritiesClaim(), authorityList)
 						   .compact();
-
+		//authorities son la lista de roles
 		return new AuthenticationResponse(token);
 	}
 

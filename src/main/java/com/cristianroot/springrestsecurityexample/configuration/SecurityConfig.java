@@ -40,11 +40,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
 	@Bean
 	@Override
-	//no hemos definido uno personalizado y permite inyectar este servicio en el resto de clases pero
-	//al no ser sobreescrito no está disponible para inyectarse
+	//con el bean, la primera vez que spring necesite crear un password encoder le indica que utilice este para inyectarlo donde
+	//quiera hacerlo. Solo se usa una vez porque una vez cogido ya lo guarda en memoria
 	public AuthenticationManager authenticationManagerBean() throws Exception {
 		return super.authenticationManagerBean();
 	}
+
 
 	@Bean
 	//encriptar la contraseña
@@ -53,7 +54,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	}
 
 	@Autowired
+	//configuracion global de la seguridad
 	//con esto seteamos el autentication donde le decimos el ahtentication manager que usamos y el password encode
+	//necesitos pasar el password encode porque las contraseñas en bbdd están cifradas
 	public void configureAuthenticationManager(AuthenticationManagerBuilder authenticationManagerBuilder) throws Exception {
 		authenticationManagerBuilder.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder());
 	}

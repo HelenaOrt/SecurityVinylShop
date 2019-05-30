@@ -2,9 +2,9 @@ insert into music_group(name, members) values('Ramin Djawadi', 1);
 insert into music_group(name, members) values('Justin Hurwitz', 1);
 insert into music_group(name, members) values('Metallica', 4);
 
-insert into vinyl(name, publish_date, price, size, music_group_id) values('Game of thrones', now(), 15.95, 'SMALL', 1);
-insert into vinyl(name, publish_date, price, size, music_group_id) values('La la land', now(), 19.95, 'MINI', 2);
-insert into vinyl(name, publish_date, price, size, music_group_id) values('Master of Puppets', now(), 12.95, 'STANDARD', 3);
+insert into vinyl(name, publish_date, price, vinyl_size, music_group_id) values('Game of thrones', now(), 15.95, 'SMALL', 1);
+insert into vinyl(name, publish_date, price, vinyl_size, music_group_id) values('La la land', now(), 19.95, 'MINI', 2);
+insert into vinyl(name, publish_date, price, vinyl_size, music_group_id) values('Master of Puppets', now(), 12.95, 'STANDARD', 3);
 
 insert into client(name, password) values('Cristian', '$2a$12$k4Zt1f1CYw34zkrU2P7Iz.IAyklW4yawVZtYVGqNJ2gkGj4lwsjze');
 insert into client(name, password) values('Alberto', '$2a$12$k4Zt1f1CYw34zkrU2P7Iz.IAyklW4yawVZtYVGqNJ2gkGj4lwsjze');

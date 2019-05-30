@@ -28,7 +28,7 @@ public class Vinyl {
 
 	@NotNull
 	@Enumerated(EnumType.STRING)
-	private VinylSize size;
+	private VinylSize vinylSize;
 
 	@NotNull
 	@Min(1)
@@ -64,12 +64,12 @@ public class Vinyl {
 		this.publishDate = publishDate;
 	}
 
-	public VinylSize getSize() {
-		return size;
+	public VinylSize getVinylSize() {
+		return vinylSize;
 	}
 
-	public void setSize(VinylSize size) {
-		this.size = size;
+	public void setVinylSize(VinylSize vinylSize) {
+		this.vinylSize = vinylSize;
 	}
 
 	public MusicGroup getMusicGroup() {

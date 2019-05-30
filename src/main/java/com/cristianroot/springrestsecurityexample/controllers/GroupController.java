@@ -9,8 +9,8 @@ import com.cristianroot.springrestsecurityexample.exceptions.EntityNotFoundExcep
 import com.cristianroot.springrestsecurityexample.exceptions.IdRequiredException;
 import com.cristianroot.springrestsecurityexample.exceptions.IllegalOperationException;
 import com.cristianroot.springrestsecurityexample.models.MusicGroupModel;
+import com.cristianroot.springrestsecurityexample.models.snapshot.GroupSnapshot;
 import com.cristianroot.springrestsecurityexample.services.GroupService;
-import com.cristianroot.springrestsecurityexample.services.GroupServiceSnapshot;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -20,11 +20,9 @@ import java.util.List;
 public class GroupController {
 
 	private final GroupService groupService;
-	private final GroupServiceSnapshot groupServiceSnapshot;
 
-	public GroupController(GroupService groupService, GroupServiceSnapshot groupServiceSnapshot) {
+	public GroupController(GroupService groupService) {
 		this.groupService = groupService;
-		this.groupServiceSnapshot = groupServiceSnapshot;
 	}
 
 	@GetMapping("/groups")
@@ -37,29 +35,26 @@ public class GroupController {
 		return groupService.findOne(id);
 	}
 
+	@GetMapping("/groups/snapshot")
+	public GroupSnapshot snapshot(GroupSnapshot groupSnapshot) {
+		return groupService.groupSnapshot(groupSnapshot);
+	}
+
 	@PostMapping("/groups")
-	public MusicGroupModel save(@Valid @RequestBody MusicGroupModel musicGroupModel) throws DuplicatedEntityException, IdRequiredException, EntityNotFoundException {
+	public MusicGroupModel save(@Valid @RequestBody MusicGroupModel musicGroupModel)
+			throws DuplicatedEntityException, IdRequiredException, EntityNotFoundException {
 		return groupService.save(musicGroupModel);
 	}
 
 	@PutMapping("/groups/{id}")
-	public MusicGroupModel update(@PathVariable long id, @RequestBody MusicGroupModel musicGroupModel) throws DuplicatedEntityException, IllegalOperationException, IdRequiredException, EntityNotFoundException {
+	public MusicGroupModel update(@PathVariable long id, @RequestBody MusicGroupModel musicGroupModel)
+			throws DuplicatedEntityException, IllegalOperationException, IdRequiredException, EntityNotFoundException {
 		return groupService.update(id, musicGroupModel);
 	}
 
 	@DeleteMapping("/groups/{id}")
 	public void delete(@PathVariable long id) throws EntityNotFoundException {
 		groupService.delete(id);
-	}
-
-	@GetMapping("/groups/top5")
-	public List<MusicGroupModel> findTop5Groups() throws EntityNotFoundException {
-		return groupServiceSnapshot.findTop5();
-	}
-
-	@GetMapping("groups/number")
-	public int countGroups() throws EntityNotFoundException {
-		return groupServiceSnapshot.countGrups();
 	}
 
 }

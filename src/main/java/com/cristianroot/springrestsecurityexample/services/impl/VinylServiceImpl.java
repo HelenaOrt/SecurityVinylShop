@@ -4,6 +4,7 @@
 
 package com.cristianroot.springrestsecurityexample.services.impl;
 
+import com.cristianroot.springrestsecurityexample.constants.VinylSize;
 import com.cristianroot.springrestsecurityexample.entities.MusicGroup;
 import com.cristianroot.springrestsecurityexample.entities.Vinyl;
 import com.cristianroot.springrestsecurityexample.exceptions.DuplicatedEntityException;
@@ -11,6 +12,7 @@ import com.cristianroot.springrestsecurityexample.exceptions.EntityNotFoundExcep
 import com.cristianroot.springrestsecurityexample.exceptions.IdRequiredException;
 import com.cristianroot.springrestsecurityexample.exceptions.IllegalOperationException;
 import com.cristianroot.springrestsecurityexample.models.VinylModel;
+import com.cristianroot.springrestsecurityexample.models.snapshot.VinylSnapshot;
 import com.cristianroot.springrestsecurityexample.repositories.GroupRepository;
 import com.cristianroot.springrestsecurityexample.repositories.VinylRepository;
 import com.cristianroot.springrestsecurityexample.services.VinylService;
@@ -18,11 +20,13 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
 public class VinylServiceImpl implements VinylService {
+
 
 	private final VinylRepository vinylRepository;
 	private final GroupRepository groupRepository;
@@ -34,7 +38,9 @@ public class VinylServiceImpl implements VinylService {
 
 	@Override
 	public List<VinylModel> findAll() {
-		return vinylRepository.findAll().stream().map(VinylModel::from).collect(Collectors.toList());
+		return vinylRepository.findAll().stream()
+							  .map(VinylModel::from)
+							  .collect(Collectors.toList());
 	}
 
 	@Override
@@ -44,14 +50,13 @@ public class VinylServiceImpl implements VinylService {
 
 	@Override
 	public VinylModel save(VinylModel vinylModel) throws DuplicatedEntityException, IdRequiredException, EntityNotFoundException {
-		if (vinylRepository.findByNameIgnoreCase(vinylModel.getName()).isPresent())
-			throw new DuplicatedEntityException();
+		vinylRepository.findByNameIgnoreCase(vinylModel.getName()).orElseThrow(DuplicatedEntityException::new);
 
 		long groupId = vinylModel.getGroup().getId().orElseThrow(IdRequiredException::new);
 		Vinyl vinyl = new Vinyl();
 		vinyl.setName(vinylModel.getName());
 		vinyl.setPrice(vinylModel.getPrice());
-		vinyl.setSize(vinylModel.getSize());
+		vinyl.setVinylSize(vinylModel.getVinylSize());
 		vinyl.setPublishDate(LocalDate.now());
 		vinyl.setMusicGroup(groupRepository.findById(groupId)
 										   .orElseThrow(() -> new EntityNotFoundException(MusicGroup.class, groupId)));
@@ -69,18 +74,23 @@ public class VinylServiceImpl implements VinylService {
 		Vinyl vinyl = vinylRepository.findById(id).orElseThrow(() -> new EntityNotFoundException(Vinyl.class, id));
 		Optional<Vinyl> duplicatedVinyl = vinylRepository.findByNameIgnoreCase(vinylModel.getName());
 		if (duplicatedVinyl.isPresent()) {
-			if (duplicatedVinyl.get().getId() != vinyl.getId()) {
+			if (duplicatedVinyl.get().getId() != vinyl.getId())
 				throw new DuplicatedEntityException();
-			}
 		}
-		if (vinylRepository.findByNameIgnoreCase(vinylModel.getName()).isPresent())
-			throw new DuplicatedEntityException();
+
+		//otra forma de hacerlo
+		/*vinylRepository.findByNameIgnoreCase(vinylModel.getName())
+					   .map(Vinyl::getId)
+					   .filter(duplicatedVinylId ->duplicatedVinylId == vinyl.getId())
+					   .orElseThrow(DuplicatedEntityException::new);*/
+
+		vinylRepository.findByNameIgnoreCase(vinylModel.getName()).orElseThrow(DuplicatedEntityException::new);
 
 		long groupId = vinylModel.getGroup().getId().orElseThrow(IdRequiredException::new);
 
 		vinyl.setName(vinylModel.getName());
 		vinyl.setPrice(vinylModel.getPrice());
-		vinyl.setSize(vinylModel.getSize());
+		vinyl.setVinylSize(vinylModel.getVinylSize());
 		vinyl.setPublishDate(LocalDate.now());
 		vinyl.setMusicGroup(groupRepository.findById(groupId)
 										   .orElseThrow(() -> new EntityNotFoundException(MusicGroup.class, groupId)));
@@ -93,5 +103,18 @@ public class VinylServiceImpl implements VinylService {
 		Vinyl vinyl = vinylRepository.findById(id).orElseThrow(() -> new EntityNotFoundException(Vinyl.class, id));
 		vinylRepository.delete(vinyl);
 	}
+
+	@Override
+	public VinylSnapshot vinylSnapshot(VinylSnapshot vinylSnapshot) {
+		List<VinylModel> auxList = vinylRepository.findAll().stream().map(VinylModel::from).collect(Collectors.toList());
+		Map<VinylSize, Long> vinylsBySizeMap = auxList
+				.stream().collect(Collectors.groupingBy(VinylModel::getVinylSize, Collectors.counting()));
+
+		vinylSnapshot.setTop5vinyls(vinylRepository.findTop5());
+		vinylSnapshot.setVinylSizeMap(vinylsBySizeMap);
+		vinylSnapshot.setVinylNumber(vinylRepository.findAll().size());
+		return vinylSnapshot;
+	}
+
 
 }

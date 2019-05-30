@@ -15,6 +15,8 @@ import java.io.IOException;
 @Component
 public class RestAuthenticationEntryPoint implements AuthenticationEntryPoint {
 
+	//esta clase lo que hace es transformar el 403 que devuelve security por defecto a un 403 por eso es necesario redireccionarlo
+	//a un 401
 	@Override
 	public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException authException) throws IOException {
 		response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Unauthorized");

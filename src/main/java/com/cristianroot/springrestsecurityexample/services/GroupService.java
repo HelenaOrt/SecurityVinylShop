@@ -9,6 +9,7 @@ import com.cristianroot.springrestsecurityexample.exceptions.EntityNotFoundExcep
 import com.cristianroot.springrestsecurityexample.exceptions.IdRequiredException;
 import com.cristianroot.springrestsecurityexample.exceptions.IllegalOperationException;
 import com.cristianroot.springrestsecurityexample.models.MusicGroupModel;
+import com.cristianroot.springrestsecurityexample.models.snapshot.GroupSnapshot;
 
 import java.util.List;
 
@@ -23,5 +24,8 @@ public interface GroupService {
 	MusicGroupModel update(long id, MusicGroupModel musicGroupModel) throws EntityNotFoundException, DuplicatedEntityException, IdRequiredException, IllegalOperationException;
 
 	void delete(long id) throws EntityNotFoundException;
+
+	GroupSnapshot groupSnapshot(GroupSnapshot groupSnapshot);
+
 
 }

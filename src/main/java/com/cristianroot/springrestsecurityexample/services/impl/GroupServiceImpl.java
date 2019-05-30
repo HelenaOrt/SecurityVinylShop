@@ -10,6 +10,7 @@ import com.cristianroot.springrestsecurityexample.exceptions.EntityNotFoundExcep
 import com.cristianroot.springrestsecurityexample.exceptions.IdRequiredException;
 import com.cristianroot.springrestsecurityexample.exceptions.IllegalOperationException;
 import com.cristianroot.springrestsecurityexample.models.MusicGroupModel;
+import com.cristianroot.springrestsecurityexample.models.snapshot.GroupSnapshot;
 import com.cristianroot.springrestsecurityexample.repositories.GroupRepository;
 import com.cristianroot.springrestsecurityexample.services.GroupService;
 import org.springframework.stereotype.Service;
@@ -82,4 +83,12 @@ public class GroupServiceImpl implements GroupService {
 		groupRepository.delete(musicGroup);
 	}
 
+	@Override
+	public GroupSnapshot groupSnapshot(GroupSnapshot groupSnapshot) {
+		groupSnapshot.setTop5groups(groupRepository.findTop5());
+		groupSnapshot.setGroupNumber(groupRepository.findAll().size());
+		return groupSnapshot;
+	}
 }
+
+

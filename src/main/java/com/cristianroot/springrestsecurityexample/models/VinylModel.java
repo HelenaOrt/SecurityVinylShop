@@ -25,7 +25,7 @@ public class VinylModel {
 	private String name;
 
 	@NotNull
-	private VinylSize size;
+	private VinylSize vinylSize;
 
 	public static VinylModel from(Vinyl vinyl) {
 		VinylModel vinylModel = new VinylModel();
@@ -33,16 +33,16 @@ public class VinylModel {
 		vinylModel.setName(vinyl.getName());
 		vinylModel.setPrice(vinyl.getPrice());
 		vinylModel.setGroup(MusicGroupModel.from(vinyl.getMusicGroup()));
-		vinylModel.setSize(vinyl.getSize());
+		vinylModel.setVinylSize(vinyl.getVinylSize());
 		return vinylModel;
 	}
 
-	public VinylSize getSize() {
-		return size;
+	public VinylSize getVinylSize() {
+		return vinylSize;
 	}
 
-	public VinylModel setSize(VinylSize size) {
-		this.size = size;
+	public VinylModel setVinylSize(VinylSize vinylSize) {
+		this.vinylSize = vinylSize;
 		return this;
 	}
 
