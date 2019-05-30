@@ -18,7 +18,7 @@ public interface GroupRepository extends JpaRepository<MusicGroup, Long> {
 
 	Optional<MusicGroup> findByNameIgnoreCase(String name);
 
-	@Query("select m from MusicGroup m join m.publishedVinylList v join v.purchaseList p group by m.id order by quantity desc")
+	@Query("select m from MusicGroup m join m.publishedVinylList v join v.purchaseList p group by m.id order by sum(p.quantity) desc")
 	List<MusicGroupModel> findTop5();
 
 }
